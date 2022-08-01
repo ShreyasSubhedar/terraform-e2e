@@ -5,17 +5,19 @@ steps
 
 0. install terrform v1.2.6 using command `snap install terraform --classic`
 1. go to ec2 folder
+    -  run  `export AWS_ACCESS_KEY_ID=_your_AWS_ACCESS_KEY_ID`
+    - run `export AWS_SECRET_ACCESS_KEY=_your_AWS_SECRET_ACCESS_KEY`
 2. run `terraform init` 
 3. run `terraform apply`
 4. run `terraform destroy`
 
-export $AWS_ACCESS_KEY_ID=<your AWS_ACCESS_KEY_ID>
-export $AWS_SECRET_ACCESS_KEY=<your AWS_SECRET_ACCESS_KEY>
+
+
 
 once all the above steps work properly, then go ahead with e2e tests
 
 1. install go (follow this https://www.digitalocean.com/community/tutorials/how-to-install-go-on-ubuntu-20-04)
-2. go to test folder
+2. go to the test folder
 3. run `go mod tidy`
 4. run `go get all`
 5. run `go test`
