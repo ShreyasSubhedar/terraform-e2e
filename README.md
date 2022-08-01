@@ -2,12 +2,15 @@
 The e2e tests for terraform code
 
 steps
+
 0. install terrform v1.2.6 using command `snap install terraform --classic`
 1. go to ec2 folder
 2. run `terraform init` 
 3. run `terraform apply`
 4. run `terraform destroy`
 
+export $AWS_ACCESS_KEY_ID=<your AWS_ACCESS_KEY_ID>
+export $AWS_SECRET_ACCESS_KEY=<your AWS_SECRET_ACCESS_KEY>
 
 once all the above steps work properly, then go ahead with e2e tests
 
