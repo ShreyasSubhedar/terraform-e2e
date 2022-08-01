@@ -11,7 +11,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-// An example of how to test the Terraform module in examples/terraform-aws-example using Terratest.
+// An example of how to test the Terraform module using Terratest.
 func TestTerraformAwsExample(t *testing.T) {
 	t.Parallel()
 
@@ -25,12 +25,8 @@ func TestTerraformAwsExample(t *testing.T) {
 
 	// Pick a random AWS region to test in. This helps ensure your code works in all regions.
 	awsRegion := "ap-south-1"
-	// Some AWS regions are missing certain instance types, so pick an available type based on the region we picked
 	instanceType := aws.GetRecommendedInstanceType(t, awsRegion, []string{"t2.micro", "t3.micro"})
 
-	// website::tag::1::Configure Terraform setting path to Terraform code, EC2 instance name, and AWS Region. We also
-	// configure the options with default retryable errors to handle the most common retryable errors encountered in
-	// terraform testing.
 	terraformOptions := terraform.WithDefaultRetryableErrors(t, &terraform.Options{
 		// The path to where our Terraform code is located
 		TerraformDir: exampleFolder,
@@ -47,18 +43,10 @@ func TestTerraformAwsExample(t *testing.T) {
 		},
 	})
 
-	// website::tag::4::At the end of the test, run `terraform destroy` to clean up any resources that were created
 	defer terraform.Destroy(t, terraformOptions)
-
-	// website::tag::2::Run `terraform init` and `terraform apply` and fail the test if there are any errors
 	terraform.InitAndApply(t, terraformOptions)
-
-	// Run `terraform output` to get the value of an output variable
 	instanceID := terraform.Output(t, terraformOptions, "instance_id")
-
 	aws.AddTagsToResource(t, awsRegion, instanceID, map[string]string{"testing": "testing-tag-value"})
-
-	// Look up the tags for the given Instance ID
 	instanceTags := aws.GetTagsForEc2Instance(t, awsRegion, instanceID)
 
 	// website::tag::3::Check if the EC2 instance with a given tag and name is set.
